@@ -121,7 +121,7 @@ else:
             df_to_update = df_to_update.drop_duplicates('Date', keep = 'last', ignore_index = True)
             df_to_update = df_to_update.sort_values('Date')
             
-            df_to_update.to_csv(f'./{coin}.csv',
+            df.to_csv('{}{}.csv'.format(SAVE_LOCATION, ticker),
                       index = False)
             
             

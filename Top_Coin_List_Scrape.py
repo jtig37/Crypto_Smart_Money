@@ -15,13 +15,9 @@ import time
 ROW_LIMIT = 3000
 SAVE_OUTPUT = True
 
-
-
-
-
 ###WEBDRIVER INITIALIZATION
 #=================================================================================
-path = 'CHROMEDRIVER-PATH'
+path = '/usr/local/bin/chromedriver'
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--incognito')
@@ -29,11 +25,6 @@ options.add_argument('--incognito')
 driver = webdriver.Chrome(path, chrome_options=options)
 
 driver.get('https://coinmarketcap.com/all/views/all/')
-
-
-
-
-
 
 ###SCROLL DOWN AND LOAD DATA
 #==================================================================================
@@ -46,11 +37,11 @@ last_row = -1
 while int(last_row) <= ROW_LIMIT:
     #400 birim asagi yaklasik 11 row'a denk geliyor
     scroll_location = scroll_location + 400
-    driver.execute_script(f"window.scrollTo(0, {scroll_location});")
+    driver.execute_script("window.scrollTo(0, {});".format(scroll_location))
     
     time.sleep(0.1)
-    soup = BeautifulSoup(driver.page_source, features = 'lxml')
-    rows = soup.find_all(class_ = "cmc-table__cell cmc-table__cell--sticky cmc-table__cell--sortable cmc-table__cell--left cmc-table__cell--sort-by__rank")
+    soup = BeautifulSoup(driver.page_source, features='lxml')
+    rows = soup.find_all(class_="cmc-table__cell cmc-table__cell--sticky cmc-table__cell--sortable cmc-table__cell--left cmc-table__cell--sort-by__rank")
     
     #son row degismediyse Load More butonuna tikla
     if rows[-1].div.text == last_row:
@@ -80,14 +71,11 @@ print('time elapsed for scrape:',time.time()-start)
 #================================================================================
 output = dfs[2].iloc[:,:10].copy()
 if SAVE_OUTPUT:
-    output.to_csv('SAVE_LOCATION', index = False)
+    output.to_csv('Outputs/coinmarketcap_market_data.csv', index=False)
     print('saved to Outputs/coinmarketcap_market_data.csv')
     
 try:
     import winsound
-    winsound.Beep(frequency = 2500, duration = 1000 )
+    winsound.Beep(frequency=2500, duration=1000)
 except:
-    0
-
-
-
+    pass
